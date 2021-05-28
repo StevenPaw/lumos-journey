@@ -526,6 +526,8 @@ MonoBehaviour:
   runSpeed: 17
   sneakSpeed: 3
   gravity: -9.81
+  jumpForce: 10
+  jump: {x: 0, y: 0, z: 0}
 --- !u!143 &842120170
 CharacterController:
   m_ObjectHideFlags: 0

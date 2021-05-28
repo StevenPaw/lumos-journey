@@ -26,6 +26,13 @@ public class CharacterControllerMovement : MonoBehaviour
 
     private Vector3 motion; //Vector3 we use to move the CharacterController
 
+    [SerializeField] 
+    private float jumpForce;
+
+    [SerializeField]
+    private Vector3 jump;
+
+
     /// <summary>
     /// Before we can go through with Update, we need to attach the script to a GameObject wtih a 
     /// CharacterController-Component to be able to even access a CharacterController and store it in a variable
@@ -33,6 +40,7 @@ public class CharacterControllerMovement : MonoBehaviour
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+        
     }
 
 
@@ -52,6 +60,15 @@ public class CharacterControllerMovement : MonoBehaviour
             moveSpeed = walkSpeed;
         }
 
+        /// <summary>
+        /// If the spacebar is pressed and the character is not already jumping
+        /// </summary>
+        if (Input.GetKey(KeyCode.Space) && characterController.isGrounded)
+        {
+            jump = new Vector3(0f, jumpForce, 0f);
+        }
+        
+
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
@@ -60,6 +77,8 @@ public class CharacterControllerMovement : MonoBehaviour
         // y is set to the gravity value which will pull the characterController down 
         // z is set to the verticalInput value which will move the characterController forwards or backwards
         motion = new Vector3(horizontalInput, gravity, verticalInput);
+       /// motion = transform.right * horizontalInput + transform.forward * verticalInput - transform.up * gravity + jumpForce;
+      
 
 
         // We apply the Vector for movement (named Motion) to the .Move() method of the characterController 
