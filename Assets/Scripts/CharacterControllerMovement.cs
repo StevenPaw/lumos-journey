@@ -27,11 +27,11 @@ public class CharacterControllerMovement : MonoBehaviour
     private Vector3 motion; //Vector3 we use to move the CharacterController
 
     [SerializeField] 
-    private float jumpForce;
+    private float jumpForce; //The force which should be applied upwards when jumping
 
-    [SerializeField]
-    private Vector3 jump;
+    private Vector3 jump; //Vector 3 which describes the jump vector
 
+    [SerializeField] private float jumpSmoother; //How smooth the jump speed should decrease
 
     /// <summary>
     /// Before we can go through with Update, we need to attach the script to a GameObject wtih a 
@@ -60,12 +60,21 @@ public class CharacterControllerMovement : MonoBehaviour
             moveSpeed = walkSpeed;
         }
 
-        /// <summary>
-        /// If the spacebar is pressed and the character is not already jumping
-        /// </summary>
+        // If the spacebar is pressed and the character is not already jumping
         if (Input.GetKey(KeyCode.Space) && characterController.isGrounded)
         {
             jump = new Vector3(0f, jumpForce, 0f);
+        }
+        else
+        {
+            if (jump.y > 0) //If the jumpvector is not 0 it should decrease by the jumpsmooth-amount
+            {
+                jump.y -= jumpSmoother;
+            }
+            else
+            {
+                jump.y = 0f;
+            }
         }
         
 
@@ -76,12 +85,11 @@ public class CharacterControllerMovement : MonoBehaviour
         // x is the horizontalInput value which will move the characterController right or left
         // y is set to the gravity value which will pull the characterController down 
         // z is set to the verticalInput value which will move the characterController forwards or backwards
-        motion = new Vector3(horizontalInput, gravity, verticalInput);
-       /// motion = transform.right * horizontalInput + transform.forward * verticalInput - transform.up * gravity + jumpForce;
-      
+        //motion = new Vector3(horizontalInput, gravity, verticalInput);
+        motion = (transform.right * horizontalInput) + (transform.forward * verticalInput) - (transform.up * (gravity)) + jump;
 
 
-        // We apply the Vector for movement (named Motion) to the .Move() method of the characterController 
+        // We apply the Vector for movement (named "motion") to the .Move() method of the characterController 
         // In order to stay framerate independent we multiply the vector by Time.deltaTime and also
         // by the moveSpeed in order to maintain control of speed
         characterController.Move(motion: motion * moveSpeed * Time.deltaTime);
