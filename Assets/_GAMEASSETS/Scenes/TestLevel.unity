@@ -663,6 +663,7 @@ GameObject:
   - component: {fileID: 842120170}
   - component: {fileID: 842120169}
   - component: {fileID: 842120175}
+  - component: {fileID: 842120176}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -838,6 +839,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 842120176}
+        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+        m_MethodName: OnMoving
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: b7e885d2-bee4-4e72-9fac-12bcbb6e7cc0
     m_ActionName: PlayerControls/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   - m_PersistentCalls:
@@ -872,11 +885,43 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5987bb09-79ca-4fbd-9879-7ac7a6409235
     m_ActionName: PlayerControls/Sneak[/Keyboard/leftCtrl]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 842120176}
+        m_TargetAssemblyTypeName: CameraController, Assembly-CSharp
+        m_MethodName: OnLooking
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 78030988-5442-4fb8-a3fe-1b38b4c78c4b
+    m_ActionName: PlayerControls/Looking[/Mouse/delta,/SwitchProControllerHID/rightStick]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerControls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &842120176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842120168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d054d2ee9b05f684eb041c32dfb662b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseSensitivity: 20
+  playerTransform: {fileID: 163032100}
+  smoothHorizontal: 0.5
+  smoothVertical: 0.5
 --- !u!1 &897031105
 GameObject:
   m_ObjectHideFlags: 0

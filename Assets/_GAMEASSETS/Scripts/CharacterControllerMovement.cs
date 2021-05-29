@@ -20,9 +20,9 @@ public class CharacterControllerMovement : MonoBehaviour
     [SerializeField]
     private float sneakSpeed; //the slowest speed, the character uses when sneaking
 
-    [SerializeField]
-    private float gravity; //use the gravity of the earth: -9.81
-
+    //GRAVITY
+    [SerializeField] private float gravity; //use the gravity of the earth: -9.81
+    
     private CharacterController characterController; //Storing the CharacterController Component
 
     private Vector3 motion; //Vector3 we use to move the CharacterController
@@ -32,13 +32,16 @@ public class CharacterControllerMovement : MonoBehaviour
 
     private Vector3 jump; //Vector 3 which describes the jump vector
 
-    [SerializeField] private float jumpSmoother; //How smooth the jump speed should decrease
+    [SerializeField] 
+    private float jumpSmoother; //How smooth the jump speed should decrease
 
     
     //NEW INPUT SYSTEM:
     private Vector2 rawInputAxis; //the input Movement from the Input System (declared in "OnMovement()")
     private bool isSneaking; //if the player is sneaking
     private bool isSprinting; //if the player is sprinting
+    private bool isGliding; //if the player is gliding
+    private bool isFalling; //if the player is Falling
     
     /// <summary>
     /// Before we can go through with Update, we need to attach the script to a GameObject wtih a 
@@ -47,7 +50,6 @@ public class CharacterControllerMovement : MonoBehaviour
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
-        
     }
 
 
@@ -123,7 +125,7 @@ public class CharacterControllerMovement : MonoBehaviour
         // y is set to the gravity value which will pull the characterController down 
         // z is set to the verticalInput value which will move the characterController forwards or backwards
         //motion = new Vector3(horizontalInput, gravity, verticalInput);
-        motion = (transform.right * horizontalInput) + (transform.forward * verticalInput) - (transform.up * (gravity)) + jump;
+        motion = (transform.right * horizontalInput) + (transform.forward * verticalInput) - (transform.up * gravity) + jump;
 
 
         // We apply the Vector for movement (named "motion") to the .Move() method of the characterController 
@@ -151,6 +153,15 @@ public class CharacterControllerMovement : MonoBehaviour
             {
                 jump = new Vector3(0f, jumpForce, 0f);
             }
+        }
+
+        if (value.performed)
+        {
+            isGliding = true;
+        }
+        else
+        {
+            isGliding = false;
         }
     }
 
