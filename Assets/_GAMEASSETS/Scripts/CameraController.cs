@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
@@ -18,6 +19,13 @@ public class CameraController : MonoBehaviour
     private float vVelocity = 0.0f;
     private Vector2 rawLookingAxis;
 
+    private CharacterControllerMovement characterControllerMovement;
+
+    private void Start()
+    {
+        characterControllerMovement = GetComponent<CharacterControllerMovement>();
+    }
+
     private void Update()
     {
         float mouseX = rawLookingAxis.x * mouseSensitivity;
@@ -35,7 +43,10 @@ public class CameraController : MonoBehaviour
     
     public void OnLooking(InputAction.CallbackContext value)
     {
-        rawLookingAxis = value.ReadValue<Vector2>(); //Reads the Values of the mouse or right joystick
+        if (!characterControllerMovement.IsPaused)
+        {
+            rawLookingAxis = value.ReadValue<Vector2>(); //Reads the Values of the mouse or right joystick
+        }
     }
     
     public void OnMoving(InputAction.CallbackContext value)

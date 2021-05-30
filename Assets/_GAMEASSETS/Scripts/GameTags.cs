@@ -9,11 +9,11 @@ public static class GameTags
     /// We choose a static class, because it doesn't need to be initialized
     /// In a static class all fields and methods need to be static
     /// </summary>
-     public static string player = "Player";
+     public static string PLAYER = "Player";
 
-     public static string interactableObject = "InteractableObject";
+     public static string INTERACTABLEOBJECT = "InteractableObject";
 
-     public static string jumpPlatform = "JumpPlatform";
+     public static string JUMPPLATTFORM = "JumpPlatform";
 
    /// <summary>
    /// A static method to find a GameObject by tag
@@ -22,17 +22,17 @@ public static class GameTags
    /// <returns></returns>
     public static GameObject FindPlayer()
     {
-        return GameObject.FindWithTag(player);
+        return GameObject.FindWithTag(PLAYER);
     }
 
     public static GameObject FindInteractableObject()
     {
-        return GameObject.FindWithTag(interactableObject);
+        return GameObject.FindWithTag(INTERACTABLEOBJECT);
     }
 
     public static GameObject FindJumpPlatform()
     {
-        return GameObject.FindWithTag(jumpPlatform);
+        return GameObject.FindWithTag(JUMPPLATTFORM);
     }
 
 }
