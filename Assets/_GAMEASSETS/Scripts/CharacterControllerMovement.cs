@@ -52,26 +52,21 @@ public class CharacterControllerMovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
     }
 
-
-    private void Update()
+    private void FixedUpdate()
     {
-
-        /* old input System (See "Sprint()" and "Sneak()")
-        if (Input.GetKey(KeyCode.LeftShift)) //Running with Shift
+        if (jump.y > 0) //If the jumpvector is not 0 it should decrease by the jumpsmooth-amount
         {
-            moveSpeed = runSpeed;
-        }
-        else if (Input.GetKey(KeyCode.LeftControl)) //Sneaking/Crouching with Strg/Ctrl
-        {
-            moveSpeed = sneakSpeed;
+            jump.y -= jumpSmoother;
         }
         else
         {
-            moveSpeed = walkSpeed;
+            jump.y = 0f;
         }
-        */
-        
-        if (isSprinting) //Running with Shift
+    }
+
+    private void Update()
+    {
+         if (isSprinting) //Running with Shift
         {
             moveSpeed = runSpeed;
         }
@@ -83,39 +78,6 @@ public class CharacterControllerMovement : MonoBehaviour
         {
             moveSpeed = walkSpeed;
         }
-
-        /* Old Input System
-        // If the spacebar is pressed and the character is not already jumping
-        if (Input.GetKey(KeyCode.Space) && characterController.isGrounded)
-        {
-            jump = new Vector3(0f, jumpForce, 0f);
-        }
-        else
-        {
-            if (jump.y > 0) //If the jumpvector is not 0 it should decrease by the jumpsmooth-amount
-            {
-                jump.y -= jumpSmoother;
-            }
-            else
-            {
-                jump.y = 0f;
-            }
-        }
-        */
-        
-        if (jump.y > 0) //If the jumpvector is not 0 it should decrease by the jumpsmooth-amount
-        {
-            jump.y -= jumpSmoother;
-        }
-        else
-        {
-            jump.y = 0f;
-        }
-
-        /* Old Input System
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        */
         
         float horizontalInput = rawInputAxis.x;
         float verticalInput = rawInputAxis.y;
@@ -126,12 +88,15 @@ public class CharacterControllerMovement : MonoBehaviour
         // z is set to the verticalInput value which will move the characterController forwards or backwards
         //motion = new Vector3(horizontalInput, gravity, verticalInput);
         motion = (transform.right * horizontalInput) + (transform.forward * verticalInput) - (transform.up * gravity) + jump;
-
+        
 
         // We apply the Vector for movement (named "motion") to the .Move() method of the characterController 
         // In order to stay framerate independent we multiply the vector by Time.deltaTime and also
         // by the moveSpeed in order to maintain control of speed
         characterController.Move(motion: motion * moveSpeed * Time.deltaTime);
+        Debug.Log(message: "Height: " + transform.position.y);
+
+
     }
 
     
