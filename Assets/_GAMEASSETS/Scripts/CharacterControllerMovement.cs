@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,7 +44,7 @@ public class CharacterControllerMovement : MonoBehaviour
     private bool isSprinting; //if the player is sprinting
     private bool isGliding; //if the player is gliding
     private bool isFalling; //if the player is falling
-    private bool isPaused = false; //if the player is paused
+    private bool isPaused = true; //if the player is paused
 
     [SerializeField]
     private GameObject pauseMenu; //The Pause Menu that should be seen after pausing the game
@@ -55,6 +56,11 @@ public class CharacterControllerMovement : MonoBehaviour
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
+    }
+
+    private void Start()
+    {
+        OnPause();
     }
 
     private void FixedUpdate()
@@ -175,7 +181,7 @@ public class CharacterControllerMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// Locks and unlocks the cursor when the button for "Pause Game" is pressed and TODO: Shows the Pause Menu
+    /// Locks and unlocks the cursor when the button for "Pause Game" is pressed and shows the Pause Menu
     /// </summary>
     /// <param name="value">Value from Button-Input for the Input System</param>
     public void OnPause(InputAction.CallbackContext value)
