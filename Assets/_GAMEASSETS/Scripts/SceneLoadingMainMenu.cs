@@ -54,7 +54,7 @@ public class SceneLoadingMainMenu : MonoBehaviour
 
     // The .LoadScene() method is used to load the scene we want
     //to know which scene to load we insert our string variable (the levels name)
-    public void LoadLevelScene()
+    public void LoadNewGameScene()
     {
         SceneManager.LoadScene(levelScene);
     }
