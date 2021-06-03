@@ -1,65 +1,63 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using _GAMEASSETS.Scripts.SaveSystem;
 using UnityEngine;
 
 public class SaveSystemManager : MonoBehaviour
 {
-    //plan: Save all data with ".gamesave" as ending for user saves with the name that the player enters
-    //also use ".preferences" for the preferences of the player like volume or other settings to set them globally
-    //save also a gamesave-version with the save to make sure its up to date
-    //save also a date and time when the save was last overridden to make it findable easier
-
     [SerializeField] private PlayerData playerData;
-    //[SerializeField] private GameObject playerGO;
     [SerializeField] private GameObject saveListContent;
     [SerializeField] private GameObject saveListEntry;
     [SerializeField] private int currentSaveVersion;
 
-    private string fileEnding = ".gamesave";
-    private string currentSaveName;
+    private string fileEnding = ".gamesave"; //the fileEnding used for the saveFiles
+    private string currentSaveName; //The name of the current active saveFile
     
-    private string[] filePaths;
-    private string saveFilePath;
-
-    private Camera mainCamera;
+    private string[] filePaths; //The paths to all gameSaves as array
+    private string saveFilePath; //The path where the saveFiles are stored
 
     public PlayerData PlayerData
     { get => playerData; set => playerData = value; }
 
     public int CurrentSaveVersion
     { get => currentSaveVersion; set => currentSaveVersion = value; }
-    
-    void Start()
+
+    public string CurrentSaveName
+    { get => currentSaveName; set => currentSaveName = value; }
+
+    private void Awake()
     {
-        mainCamera = Camera.main;
-        
         saveFilePath = Application.persistentDataPath;
-        
+    }
+
+    private void Start()
+    {
         ShowSaves();
     }
 
     
     //SAVING
-    private void SaveToJSON(string saveName)
+    /// <summary>
+    /// Saves the current playerData to the file with the given saveName
+    /// </summary>
+    /// <param name="saveName">(string) name of saveFile</param>
+    public void SaveFileToJson(string saveName)
     {
+        playerData.saveVersion = currentSaveVersion;
+        playerData.dateTimeOfSave = DateTime.Now.ToString(CultureInfo.InvariantCulture);
         string playerDataToSave = JsonUtility.ToJson(playerData);
         File.WriteAllText(saveFilePath + "/" + saveName + fileEnding, playerDataToSave);
     }
     
-    public void SaveFile(String saveName)
-    {
-        playerData.saveVersion = currentSaveVersion;
-        playerData.dateTimeOfSave = DateTime.Now.ToString();
-        SaveToJSON(saveName);
-    }
-
     
     //SHOWING
+    /// <summary>
+    /// Show all Save Files in List of SaveFilePrefabs
+    /// </summary>
     public void ShowSaves()
     {
-        GetAllSaveFilenames();
+        GetAllSaveFilePaths();
 
         //First destroy all save buttons
         if (saveListContent.transform.childCount > 0)
@@ -69,7 +67,7 @@ public class SaveSystemManager : MonoBehaviour
             {
                 children.Add(child.gameObject);
             }
-            children.ForEach(child => Destroy(child));
+            children.ForEach(Destroy);
         }
 
         List<PlayerData> saveFiles = new List<PlayerData>();
@@ -78,34 +76,41 @@ public class SaveSystemManager : MonoBehaviour
         //then create new ones based on the files
         foreach (String saveFile in filePaths)
         {
-            PlayerData tempPlayerData = new PlayerData();
 
-            saveFiles.Add(LoadFromJSON(Path.GetFileNameWithoutExtension(saveFile)));
+            saveFiles.Add(LoadFromJson(Path.GetFileNameWithoutExtension(saveFile)));
             saveFileNames.Add(Path.GetFileNameWithoutExtension(saveFile));
         }
 
         for(int i = 0; i < saveFiles.Count; i++)
         {
-            GameObject entry = Instantiate(saveListEntry); //Create an entry for the saves List
-            entry.transform.SetParent(saveListContent.transform); //Set the save list as parent
+            GameObject entry = Instantiate(saveListEntry, saveListContent.transform, true); //Create an entry for the saves List
             SaveListEntryData saveListEntryData = entry.GetComponent<SaveListEntryData>();
 
             entry.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
-            entry.transform.localPosition = new Vector3(entry.transform.position.x, entry.transform.position.y, 0f);
+            Vector3 position = entry.transform.position;
+            entry.transform.localPosition = new Vector3(position.x, position.y, 0f);
             
             saveListEntryData.SetValues(saveFileNames[i], saveFiles[i].collectedCollectables, 
                 saveFiles[i].collectedElements, saveFiles[i].saveVersion, saveFiles[i].dateTimeOfSave, this);
         }
     }
     
-    private void GetAllSaveFilenames()
+    /// <summary>
+    /// Get all File Paths of all Saves and save them into array
+    /// </summary>
+    private void GetAllSaveFilePaths()
     {
         filePaths = Directory.GetFiles(saveFilePath, "*" + fileEnding); //Gets all paths to files that end with ".gamesave"(fileEnding)
     }
     
     
     //LOADING
-    private PlayerData LoadFromJSON(string saveName)
+    /// <summary>
+    /// Load Gamesave from JSON-File with the given name
+    /// </summary>
+    /// <param name="saveName">(string) save to load</param>
+    /// <returns></returns>
+    private PlayerData LoadFromJson(string saveName)
     {
         PlayerData playerDataOut = new PlayerData();
         if (File.Exists(saveFilePath + "/" + saveName + fileEnding))
@@ -121,16 +126,26 @@ public class SaveSystemManager : MonoBehaviour
         return playerDataOut;
     }
 
-    public void MoveToLoadedPosition()
+    /// <summary>
+    /// Load specific save file and put data into active playerData
+    /// </summary>
+    /// <param name="saveName">(string) save to load to gameState</param>
+    public void LoadSaveFileToGameState(string saveName)
     {
-        //playerGO.transform.position = playerData.playerPosition;
+        playerData = LoadFromJson(saveName);
+        currentSaveName = saveName;
     }
 
+    /// <summary>
+    /// Checks if a specific save file exists and returns the result as bool
+    /// </summary>
+    /// <param name="saveName">(string) saveName to check for</param>
+    /// <returns></returns>
     public bool DoesSaveNameExist(string saveName)
     {
         bool doesExist = false;
 
-        GetAllSaveFilenames();
+        GetAllSaveFilePaths();
         foreach (string save in filePaths)
         {
             string fileName = Path.GetFileNameWithoutExtension(save);

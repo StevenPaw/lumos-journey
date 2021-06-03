@@ -136,14 +136,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34a139a4a00b30c41bb463f057f8ad5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  saveFileNameTXT: {fileID: 7927595193882916359}
-  collectibleCountTXT: {fileID: 7927595194091873812}
-  dateTXT: {fileID: 7927595194608266157}
+  saveFileNameTxt: {fileID: 7927595193882916359}
+  collectibleCountTxt: {fileID: 7927595194091873812}
+  dateTxt: {fileID: 7927595194608266157}
   currentSaveVersion: 1
   saveName: -undefined-
-  collectibleCount: 0
-  elementsCount: 0
-  saveVersion: 1
 --- !u!1 &7927595193882916357
 GameObject:
   m_ObjectHideFlags: 0

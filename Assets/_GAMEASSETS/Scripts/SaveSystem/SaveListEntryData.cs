@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
 using UnityEngine;
@@ -8,15 +6,15 @@ using UnityEngine.UI;
 
 public class SaveListEntryData : MonoBehaviour
 {
-    [SerializeField] private TMP_Text saveFileNameTXT;
-    [SerializeField] private TMP_Text collectibleCountTXT;
-    [SerializeField] private TMP_Text dateTXT;
+    [SerializeField] private TMP_Text saveFileNameTxt;
+    [SerializeField] private TMP_Text collectibleCountTxt;
+    [SerializeField] private TMP_Text dateTxt;
     [SerializeField] private int currentSaveVersion;
 
     [SerializeField] private string saveName = "-undefined-";
-    [SerializeField] private int collectibleCount = 0;
-    [SerializeField] private int elementsCount = 0;
-    [SerializeField] private int saveVersion = 1;
+    private int collectibleCount;
+    private int elementsCount;
+    private int saveVersion = 1;
     private DateTime saveDate = DateTime.Now;
     private SaveSystemManager saveSystemManager;
 
@@ -32,19 +30,26 @@ public class SaveListEntryData : MonoBehaviour
             GetComponent<Image>().color = Color.yellow;
         }
         
-        saveFileNameTXT.text = saveName;
+        saveFileNameTxt.text = saveName;
 
-        string collectsString;
-        collectsString = collectibleCount == 1 ? "Collect" : "Collects";
+        string collectsString = collectibleCount == 1 ? "Collect" : "Collects";
         
-        string elementsString;
-        elementsString = elementsCount == 1 ? "Element" : "Elements";
+        string elementsString = elementsCount == 1 ? "Element" : "Elements";
         
-        collectibleCountTXT.text = collectibleCount + " " + collectsString + " | " + elementsCount + " " + elementsString;
-        dateTXT.text = saveDate.ToString("g", CultureInfo.CurrentCulture);
+        collectibleCountTxt.text = collectibleCount + " " + collectsString + " | " + elementsCount + " " + elementsString;
+        dateTxt.text = saveDate.ToString("g", CultureInfo.CurrentCulture);
     }
 
-    public void SetValues(String saveNameIn, int collectibleCountIn, int elementsCountIn, int saveVersionIn, string saveDateIn, SaveSystemManager saveSystemManagerIn)
+    /// <summary>
+    /// Set Values for the SaveListEntry to show in the list
+    /// </summary>
+    /// <param name="saveNameIn">(string) name of the saveFile</param>
+    /// <param name="collectibleCountIn">(int) count of collectibles collected</param>
+    /// <param name="elementsCountIn">(int) count of elements collected</param>
+    /// <param name="saveVersionIn">(int) version of the savefile</param>
+    /// <param name="saveDateIn">(string) SaveDate-Value parsed as string from the date of the save</param>
+    /// <param name="saveSystemManagerIn">(SaveSystemManager) to get a reference to the correct SaveSystemManager without GameObject.Find()</param>
+    public void SetValues(string saveNameIn, int collectibleCountIn, int elementsCountIn, int saveVersionIn, string saveDateIn, SaveSystemManager saveSystemManagerIn)
     {
         saveName = saveNameIn;
         collectibleCount = collectibleCountIn;
@@ -52,5 +57,13 @@ public class SaveListEntryData : MonoBehaviour
         saveVersion = saveVersionIn;
         saveDate = DateTime.Parse(saveDateIn);
         saveSystemManager = saveSystemManagerIn;
+    }
+
+    /// <summary>
+    /// Public Method to load save when clicking button
+    /// </summary>
+    public void OnLoadClick()
+    {
+        saveSystemManager.LoadSaveFileToGameState(saveName);
     }
 }
