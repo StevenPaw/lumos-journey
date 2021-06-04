@@ -18,16 +18,20 @@ public class SaveListEntryData : MonoBehaviour
     private DateTime saveDate = DateTime.Now;
     private SaveSystemManager saveSystemManager;
 
+    private Image buttonImage;
+
     private void Start()
     {
+        buttonImage = GetComponent<Image>();
+        
         currentSaveVersion = saveSystemManager.CurrentSaveVersion;
         
         if (saveVersion < currentSaveVersion)
         {
-            GetComponent<Image>().color = Color.red;
+            buttonImage.color = Color.red;
         } else if (saveVersion > currentSaveVersion)
         {
-            GetComponent<Image>().color = Color.yellow;
+            buttonImage.color = Color.yellow;
         }
         
         saveFileNameTxt.text = saveName;
@@ -38,6 +42,18 @@ public class SaveListEntryData : MonoBehaviour
         
         collectibleCountTxt.text = collectibleCount + " " + collectsString + " | " + elementsCount + " " + elementsString;
         dateTxt.text = saveDate.ToString("g", CultureInfo.CurrentCulture);
+    }
+
+    private void Update()
+    {
+        if (saveSystemManager.CurrentSaveName == saveName)
+        {
+            buttonImage.color = Color.green;
+        }
+        else
+        {
+            buttonImage.color = Color.white;
+        }
     }
 
     /// <summary>

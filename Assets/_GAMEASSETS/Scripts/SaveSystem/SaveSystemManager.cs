@@ -10,9 +10,8 @@ public class SaveSystemManager : MonoBehaviour
     [SerializeField] private GameObject saveListContent;
     [SerializeField] private GameObject saveListEntry;
     [SerializeField] private int currentSaveVersion;
-
-    private string fileEnding = ".gamesave"; //the fileEnding used for the saveFiles
-    private string currentSaveName; //The name of the current active saveFile
+    [SerializeField] private string fileEnding = ".gamesave"; //the fileEnding used for the saveFiles
+    [SerializeField] private string currentSaveName; //The name of the current active saveFile
     
     private string[] filePaths; //The paths to all gameSaves as array
     private string saveFilePath; //The path where the saveFiles are stored
@@ -48,6 +47,7 @@ public class SaveSystemManager : MonoBehaviour
         playerData.dateTimeOfSave = DateTime.Now.ToString(CultureInfo.InvariantCulture);
         string playerDataToSave = JsonUtility.ToJson(playerData);
         File.WriteAllText(saveFilePath + "/" + saveName + fileEnding, playerDataToSave);
+        CurrentSaveName = saveName;
     }
     
     
@@ -134,6 +134,16 @@ public class SaveSystemManager : MonoBehaviour
     {
         playerData = LoadFromJson(saveName);
         currentSaveName = saveName;
+    }
+
+    public void DeleteSave(string saveName)
+    {
+        string filePath = saveFilePath + "/" + saveName + fileEnding;
+        if (File.Exists(filePath))
+        {
+            File.Delete(filePath);
+            ShowSaves();
+        }
     }
 
     /// <summary>
