@@ -88,6 +88,7 @@ public class NewSavePanel : MonoBehaviour
 
     public void OnPlayButtonPress()
     {
+        saveSystemManager.ActivateLoadedSaveFile();
         //TODO: Load World with active Save
     }
 

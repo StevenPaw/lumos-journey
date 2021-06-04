@@ -4,14 +4,22 @@ using System.Globalization;
 using System.IO;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class SaveSystemManager : MonoBehaviour
 {
+    [Header("There should only be one of this script in all times!")]
+    [SerializeField] private string fileEnding = ".gamesave"; //the fileEnding used for the saveFiles
+    
+    [Header("Save Data")]
     [SerializeField] private PlayerData playerData;
+    [SerializeField] private int currentSaveVersion;
+    [SerializeField] private string currentSaveName; //The name of the current active saveFile
+
+    [Header("References")]
     [SerializeField] private GameObject saveListContent;
     [SerializeField] private GameObject saveListEntry;
-    [SerializeField] private int currentSaveVersion;
-    [SerializeField] private string fileEnding = ".gamesave"; //the fileEnding used for the saveFiles
-    [SerializeField] private string currentSaveName; //The name of the current active saveFile
+    
+    private ActiveSaveData activeSaveData;
     
     private string[] filePaths; //The paths to all gameSaves as array
     private string saveFilePath; //The path where the saveFiles are stored
@@ -32,6 +40,7 @@ public class SaveSystemManager : MonoBehaviour
 
     private void Start()
     {
+        activeSaveData = GameObject.Find("ActiveSaveData").GetComponent<ActiveSaveData>();
         ShowSaves();
     }
 
@@ -43,6 +52,8 @@ public class SaveSystemManager : MonoBehaviour
     /// <param name="saveName">(string) name of saveFile</param>
     public void SaveFileToJson(string saveName)
     {
+        playerData = activeSaveData.GetData();
+        
         playerData.saveVersion = currentSaveVersion;
         playerData.dateTimeOfSave = DateTime.Now.ToString(CultureInfo.InvariantCulture);
         string playerDataToSave = JsonUtility.ToJson(playerData);
@@ -134,6 +145,14 @@ public class SaveSystemManager : MonoBehaviour
     {
         playerData = LoadFromJson(saveName);
         currentSaveName = saveName;
+    }
+
+    /// <summary>
+    /// Activates the currently loaded save file and puts it into the ActiveSaveData Class
+    /// </summary>
+    public void ActivateLoadedSaveFile()
+    {
+        activeSaveData.SetData(playerData);
     }
 
     public void DeleteSave(string saveName)
