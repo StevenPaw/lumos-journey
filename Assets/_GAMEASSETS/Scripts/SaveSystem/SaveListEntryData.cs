@@ -6,12 +6,18 @@ using UnityEngine.UI;
 
 public class SaveListEntryData : MonoBehaviour
 {
+    [SerializeField] private string saveName = "-undefined-";
     [SerializeField] private TMP_Text saveFileNameTxt;
     [SerializeField] private TMP_Text collectibleCountTxt;
     [SerializeField] private TMP_Text dateTxt;
     [SerializeField] private int currentSaveVersion;
 
-    [SerializeField] private string saveName = "-undefined-";
+    [Space] [Header("Colors")]
+    [SerializeField] private Color oldVersionColor;
+    [SerializeField] private Color newerVersionColor;
+    [SerializeField] private Color selectedColor;
+    [SerializeField] private Color standardColor;
+
     private int collectibleCount;
     private int elementsCount;
     private int saveVersion = 1;
@@ -24,14 +30,16 @@ public class SaveListEntryData : MonoBehaviour
     {
         buttonImage = GetComponent<Image>();
         
+        buttonImage.color = standardColor;
+        
         currentSaveVersion = saveSystemManager.CurrentSaveVersion;
         
         if (saveVersion < currentSaveVersion)
         {
-            buttonImage.color = Color.red;
+            buttonImage.color = oldVersionColor;
         } else if (saveVersion > currentSaveVersion)
         {
-            buttonImage.color = Color.yellow;
+            buttonImage.color = newerVersionColor;
         }
         
         saveFileNameTxt.text = saveName;
@@ -48,11 +56,11 @@ public class SaveListEntryData : MonoBehaviour
     {
         if (saveSystemManager.CurrentSaveName == saveName)
         {
-            buttonImage.color = Color.green;
+            buttonImage.color = selectedColor;
         }
         else
         {
-            buttonImage.color = Color.white;
+            buttonImage.color = standardColor;
         }
     }
 
