@@ -49,6 +49,9 @@ public class CharacterControllerMovement : MonoBehaviour
     [SerializeField]
     private GameObject pauseMenu; //The Pause Menu that should be seen after pausing the game
     
+    public bool IsPaused
+    { get => isPaused; set => isPaused = value; }
+    
     /// <summary>
     /// Before we can go through with Update, we need to attach the script to a GameObject wtih a 
     /// CharacterController-Component to be able to even access a CharacterController and store it in a variable
@@ -200,6 +203,8 @@ public class CharacterControllerMovement : MonoBehaviour
 
         }
     }
+    #endregion
+    
     public void OnPause()
     {
         isPaused = !isPaused;
@@ -216,12 +221,16 @@ public class CharacterControllerMovement : MonoBehaviour
 
         }
     }
-    #endregion
 
-    public bool IsPaused
+    public void OnBackToMenu()
     {
-        get => isPaused;
-        set => isPaused = value;
+        //TODO:Back to Menu
+    }
+    
+    public void OnGameQuit()
+    {
+        Application.Quit();
+        Debug.Log("Game quitting!");
     }
 }
 
