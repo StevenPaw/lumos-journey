@@ -15,7 +15,7 @@ public class SliderValuetoText : MonoBehaviour
 
     public void ShowSliderValue ()
     {
-        string sliderMessage = "Volume =" + slider.value;
+        string sliderMessage = "Volume =" + (int)(slider.value * 100);
         textMesh.text =  sliderMessage;
     }
 }
