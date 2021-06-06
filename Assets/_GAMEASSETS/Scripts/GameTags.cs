@@ -9,8 +9,8 @@ public static class GameTags
     /// We choose a static class, because it doesn't need to be initialized
     /// In a static class all fields and methods need to be static
     /// </summary>
-     public static string PLAYER = "Player";
-
+    public static string PLAYER = "Player";
+    
      public static string INTERACTABLEOBJECT = "InteractableObject";
 
      public static string JUMPPLATTFORM = "JumpPlatform";

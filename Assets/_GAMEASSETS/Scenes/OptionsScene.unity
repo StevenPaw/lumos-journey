@@ -346,7 +346,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1785171206}
+      - m_Target: {fileID: 1962741074}
         m_TargetAssemblyTypeName: SliderValuetoText, Assembly-CSharp
         m_MethodName: ShowSliderValue
         m_Mode: 1
@@ -968,9 +968,8 @@ GameObject:
   - component: {fileID: 1785171205}
   - component: {fileID: 1785171208}
   - component: {fileID: 1785171207}
-  - component: {fileID: 1785171206}
   m_Layer: 5
-  m_Name: VolumeValueText
+  m_Name: VolumeValueTxT
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -995,19 +994,6 @@ RectTransform:
   m_AnchoredPosition: {x: -20, y: 147}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1785171206
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1785171204}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a6073d56fad17e4fa03872fd093e5c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slider: {fileID: 391898993}
 --- !u!114 &1785171207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1028,7 +1014,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Slider Value
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1190,6 +1176,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1962741073}
   - component: {fileID: 1962741072}
+  - component: {fileID: 1962741074}
   m_Layer: 0
   m_Name: VolumeSetter
   m_TagString: Untagged
@@ -1224,6 +1211,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1962741074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962741071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a6073d56fad17e4fa03872fd093e5c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 391898993}
+  textMesh: {fileID: 1785171207}
 --- !u!1 &2093317591
 GameObject:
   m_ObjectHideFlags: 0
